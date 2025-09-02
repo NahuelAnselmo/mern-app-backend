@@ -1,0 +1,33 @@
+{
+  "name": "back-crud-auth",
+  "version": "1.0.0",
+  "description": "back para web con crud y demas..",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/index.js --bundle --platform=node --outfile=dist/index.cjs --minify",
+    "start": "node --env-file=.env dist/index.cjs",
+    "dev": "node --watch --env-file=.env src/index.js",
+    "lint": "eslint . --fix"
+  },
+  "keywords": [
+    "task",
+    "back",
+    "crud"
+  ],
+  "author": "Nahuel Anselmo",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.0",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "nodemon": "^3.1.10"
+  }
+}
