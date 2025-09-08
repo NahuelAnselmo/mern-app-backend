@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import {
   createTasks,
-  deleteTasks,
+  deleteTask,
   getTask,
   getTasks,
-  updateTasks,
+  updateTask,
 } from '../controllers/tasks.controller.js';
 import { authRequired } from '../middlewares/validateToken.js';
 
@@ -16,8 +16,8 @@ router.get('/tasks/:id', authRequired, getTask);
 
 router.post('/tasks', authRequired, createTasks);
 
-router.delete('/tasks/:id', authRequired, deleteTasks);
+router.delete('/tasks/:id', authRequired, deleteTask);
 
-router.put('/tasks/:id', authRequired, updateTasks);
+router.put('/tasks/:id', authRequired, updateTask);
 
 export default router;
