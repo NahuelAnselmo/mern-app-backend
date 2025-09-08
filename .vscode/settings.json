@@ -1,0 +1,41 @@
+{
+  // 🚀 Formatear siempre al guardar
+  "editor.formatOnSave": true,
+
+  // 🚀 Organizar imports al guardar
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // 🚀 Configuración Prettier
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.trailingComma": "es5",
+  "prettier.printWidth": 80,
+  "prettier.tabWidth": 2,
+  "prettier.jsxSingleQuote": true,
+  "prettier.jsxBracketSameLine": false,
+
+  // 🚀 Forzar estilo para JSX/XML: atributos en múltiples líneas
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+
+  // 🚀 Estilo de salto de línea uniforme
+  "files.eol": "\n",
+
+  // 🚀 ESLint + Prettier integrados
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
+}

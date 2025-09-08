@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { createAccessToken } from "../libs/jwt.js";
+import { createAccessToken } from '../libs/jwt.js';
 import User from '../models/user.model.js';
 
 export const register = async (req, res) => {
@@ -14,15 +14,15 @@ export const register = async (req, res) => {
       password: passwordHash,
     });
     const newUserSaved = await newUser.save();
-    const token = await createAccessToken({id: newUserSaved._id});
-    res.cookie('token', token)
+    const token = await createAccessToken({ id: newUserSaved._id });
+    res.cookie('token', token);
     res.json({
       id: newUserSaved._id,
       username: newUserSaved.username,
       email: newUserSaved.email,
     });
   } catch (error) {
-    res.status(500).json({message: error.message})
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -30,29 +30,46 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const userFound = await User.findOne({email});
-    if(!userFound) return res.status(400).json({message:"usuario o contraseña incorrecta"});
+    const userFound = await User.findOne({ email });
+    if (!userFound)
+      return res
+        .status(400)
+        .json({ message: 'usuario o contraseña incorrecta' });
 
     const isMatch = await bcrypt.compare(password, userFound.password);
-    if(!isMatch) return res.status(400).json({message:"usuario o contraseña incorrecta"});
+    if (!isMatch)
+      return res
+        .status(400)
+        .json({ message: 'usuario o contraseña incorrecta' });
 
-    const token = await createAccessToken({id: userFound._id});
-    
-    res.cookie('token', token)
+    const token = await createAccessToken({ id: userFound._id });
+
+    res.cookie('token', token);
     res.json({
       id: userFound._id,
       username: userFound.username,
       email: userFound.email,
     });
   } catch (error) {
-    res.status(500).json({message: error.message})
+    res.status(500).json({ message: error.message });
   }
 };
 
 export const logout = (req, res) => {
-  res.cookie('token', "", {
+  res.cookie('token', '', {
     expires: new Date(0),
   });
   return res.sendStatus(200);
 };
 
+export const profile = async (req, res) => {
+  const userFound = await User.findById(req.user.id);
+
+  if (!userFound) return res.status(400).json({ message: 'User not found' });
+
+  return res.json({
+    id: userFound._id,
+    username: userFound.username,
+    email: userFound.email,
+  });
+};
