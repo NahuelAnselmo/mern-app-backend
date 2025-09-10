@@ -15,7 +15,6 @@
   "prettier.printWidth": 80,
   "prettier.tabWidth": 2,
   "prettier.jsxSingleQuote": true,
-  "prettier.jsxBracketSameLine": false,
 
   // 🚀 Forzar estilo para JSX/XML: atributos en múltiples líneas
   "[javascriptreact]": {
