@@ -14,21 +14,18 @@ dotenv.config();
 
 const app = express();
 
-// Seguridad HTTP headers
 app.use(helmet());
 
-// CORS para permitir peticiones del frontend
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Cambia por la URL de tu frontend
+    origin: 'http://localhost:5173',
     credentials: true,
   }),
 );
 
-// Rate limiting para evitar abuso
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // máximo 100 peticiones por IP
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: 'Too many requests, please try again later.',
 });
 app.use(limiter);
