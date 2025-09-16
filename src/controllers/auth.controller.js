@@ -6,10 +6,19 @@ export const register = async (req, res) => {
   const { email, password, username } = req.body;
 
   try {
-
     const userFound = await User.findOne({ email });
     if (userFound)
-      return res.status(400).json(['El email ya existe']);
+      return res.status(400).json({ message: 'the email is already in use ' });
+    const userNameFound = await User.findOne({ username });
+    if (userNameFound)
+      return res
+        .status(400)
+        .json({ message: 'the username is already in use ' });
+    const userPasswordFound = await User.findOne({ email });
+    if (userPasswordFound)
+      return res
+        .status(400)
+        .json({ message: 'the password is already in use ' });
 
     const passwordHash = await bcrypt.hash(password, 10);
 
