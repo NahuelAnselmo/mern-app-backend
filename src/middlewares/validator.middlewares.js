@@ -4,9 +4,10 @@ export const validateSchema = (schemas) => (req, res, next) => {
       const result = schemas.body.safeParse(req.body);
       if (!result.success) {
         return res.status(400).json({
-          errors: result.error.errors.map(
-            (e) => `${e.path.join('.')} - ${e.message}`,
-          ),
+          errors: result.error.errors.map((e) => ({
+            path: e.path.join('.'),
+            message: e.message,
+          })),
         });
       }
       req.body = result.data;
@@ -16,9 +17,10 @@ export const validateSchema = (schemas) => (req, res, next) => {
       const result = schemas.params.safeParse(req.params);
       if (!result.success) {
         return res.status(400).json({
-          errors: result.error.errors.map(
-            (e) => `${e.path.join('.')} - ${e.message}`,
-          ),
+          errors: result.error.errors.map((e) => ({
+            path: e.path.join('.'),
+            message: e.message,
+          })),
         });
       }
       req.params = result.data;
@@ -28,9 +30,10 @@ export const validateSchema = (schemas) => (req, res, next) => {
       const result = schemas.query.safeParse(req.query);
       if (!result.success) {
         return res.status(400).json({
-          errors: result.error.errors.map(
-            (e) => `${e.path.join('.')} - ${e.message}`,
-          ),
+          errors: result.error.errors.map((e) => ({
+            path: e.path.join('.'),
+            message: e.message,
+          })),
         });
       }
       req.query = result.data;
@@ -38,6 +41,9 @@ export const validateSchema = (schemas) => (req, res, next) => {
 
     next();
   } catch (err) {
-    return res.status(500).json({ errors: ['Validation middleware error'] });
+    console.error(err); // Para debug
+    return res.status(500).json({
+      errors: [{ message: 'Unexpected validation middleware error' }],
+    });
   }
 };
