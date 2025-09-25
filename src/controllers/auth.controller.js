@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { TOKEN_SECRET } from '../config.js';
 import { createAccessToken } from '../libs/jwt.js';
 import User from '../models/user.model.js';
 
@@ -29,7 +31,11 @@ export const register = async (req, res) => {
     });
     const newUserSaved = await newUser.save();
     const token = await createAccessToken({ id: newUserSaved._id });
-    res.cookie('token', token);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
     res.json({
       id: newUserSaved._id,
       username: newUserSaved.username,
@@ -58,7 +64,11 @@ export const login = async (req, res) => {
 
     const token = await createAccessToken({ id: userFound._id });
 
-    res.cookie('token', token);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
     res.json({
       id: userFound._id,
       username: userFound.username,
@@ -85,5 +95,23 @@ export const profile = async (req, res) => {
     id: userFound._id,
     username: userFound.username,
     email: userFound.email,
+  });
+};
+
+export const verifyToken = (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+
+  jwt.verify(token, TOKEN_SECRET, async (err, user) => {
+    if (err) return res.status(401).json({ message: 'Invalid token' });
+
+    const userFound = await User.findById(user.id);
+    if (!userFound) return res.status(401).json({ message: 'Unauthorized' });
+
+    return res.json({
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
+    });
   });
 };
