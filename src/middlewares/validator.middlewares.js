@@ -10,7 +10,7 @@ export const validateSchema = (schemas) => (req, res, next) => {
           })),
         });
       }
-      req.body = result.data;
+      Object.assign(req.body, result.data); // ✅ Corrección aquí
     }
 
     if (schemas.params) {
@@ -23,7 +23,7 @@ export const validateSchema = (schemas) => (req, res, next) => {
           })),
         });
       }
-      req.params = result.data;
+      Object.assign(req.params, result.data); // ✅ Corrección aquí
     }
 
     if (schemas.query) {
@@ -36,7 +36,7 @@ export const validateSchema = (schemas) => (req, res, next) => {
           })),
         });
       }
-      req.query = result.data;
+      Object.assign(req.query, result.data); // ✅ Corrección aquí
     }
 
     next();

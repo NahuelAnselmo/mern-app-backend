@@ -46,10 +46,7 @@ export const updateTaskSchema = z.object({
 
 // Validar parámetro :id (GET, PUT, DELETE /tasks/:id)
 export const taskIdParamSchema = z.object({
-  id: z.string().refine(
-    (val) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(val),
-    { message: 'Invalid task ID format' }
-  ),
+  id: z.string().regex(/^[0-9a-fA-F]{24}$/, { message: 'Invalid task ID format' }),
 });
 
 // Validar query params en GET /tasks (paginación/filtros)
